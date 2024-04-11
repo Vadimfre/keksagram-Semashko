@@ -3,6 +3,9 @@ const LIKEMIN = 15;
 const LIKEMAX = 200;
 const PHOTOQUANTITY = 25;
 const COMMAX = 5;
+const COMMAVATARMAX = 6;
+const WIDTHCOMMENT = 35;
+const HEIGHTCOMMENT = 35;
 
 const COMMENTS = [
   `Всё отлично!`,
@@ -36,91 +39,98 @@ function getRandomArrayElement(elements) {
   return elements[getRandomInt(0, elements.length - 1)];
 }
 
-createPhoto();
+createPhotosData();
+uploadPhotos();
 
-function createPhoto() {
+function createPhotosData() {
   for (let i = 1; i <= PHOTOQUANTITY; i++) {
-    let photo = {
+    const photoData = {
       url: `photos/${i}.jpg`,
       likes: getRandomInt(LIKEMIN, LIKEMAX),
       comments: [],
       description: getRandomArrayElement(DESCRIPTIONS),
     };
-    let comment = commentSpawn();
+    let comment = commentsSpawn();
 
-    photo.comments.push(comment);
-    photosData.push(photo);
+    photoData.comments.push(comment);
+    photosData.push(photoData);
   }
-
-  uploadPhoto();
 }
 
-function commentSpawn() {
+function commentsSpawn() {
   let commentsCount = getRandomInt(1, COMMAX);
 
   for (let j = 1; j <= commentsCount; j++) {
-    let comment = {
-      avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
+    const commentData = {
+      avatar: `img/avatar-${getRandomInt(1, COMMAVATARMAX)}.svg`,
       message: getRandomArrayElement(COMMENTS),
       name: getRandomArrayElement(NAMES),
     };
-    return comment;
+    return commentData;
   }
 }
 
-function uploadPhoto() {
-  for (let ph of photosData) {
-    let pictureTemplate = document.querySelector("#picture").content;
+function uploadPhotos() {
+  let pictureTemplate = document.querySelector("#picture").content;
+  for (let photo of photosData) {
     let pictureElement = pictureTemplate.cloneNode(true);
 
-    pictureElement.querySelector(".picture__img").src = ph.url;
+    pictureElement.querySelector(".picture__img").src = photo.url;
     pictureElement.querySelector(".picture__comments").textContent =
-      ph.comments.length;
-    pictureElement.querySelector(".picture__likes").textContent = ph.likes;
+      photo.comments.length;
+    pictureElement.querySelector(".picture__likes").textContent = photo.likes;
 
     fragment.appendChild(pictureElement);
   }
   document.querySelector(".pictures").appendChild(fragment);
 }
 
-let big_picture = document.querySelector(".big-picture");
+let bigPicture = document.querySelector(".big-picture");
 let firstPhoto = photosData[0];
 
-function bigPicture() {
-  big_picture.classList.remove("hidden");
-  big_picture.querySelector(".big-picture__img img").src = firstPhoto.url;
-  big_picture.querySelector(".likes-count").textContent = firstPhoto.likes;
-  big_picture.querySelector(".comments-count").textContent =
+function presentFullSizePicture() {
+  bigPicture.classList.remove("hidden");
+  bigPicture.querySelector(".big-picture__img img").src = firstPhoto.url;
+  bigPicture.querySelector(".likes-count").textContent = firstPhoto.likes;
+  bigPicture.querySelector(".comments-count").textContent =
     firstPhoto.comments.length;
-  big_picture.querySelector(".social__caption").textContent =
+  bigPicture.querySelector(".social__caption").textContent =
     firstPhoto.description;
-
-  bigPictureComm();
 }
 
-bigPicture();
+presentFullSizePicture();
+createFullSizePictureComment();
 
-function bigPictureComm() {
+function getCommentImg(elem) {
+  let commentPhoto = document.createElement("img");
+
+  commentPhoto.classList.add("social__picture");
+  commentPhoto.src = elem.avatar;
+  commentPhoto.alt = `Аватар комментатора фотографии`;
+  commentPhoto.width = WIDTHCOMMENT;
+  commentPhoto.height = HEIGHTCOMMENT;
+  return commentPhoto;
+}
+
+function getCommentParagraph(elem) {
+  let textElement = document.createElement("p");
+
+  textElement.classList.add("social__text");
+  textElement.textContent = elem.message;
+  return textElement;
+}
+
+function createFullSizePictureComment() {
   for (let elem of firstPhoto.comments) {
     let commentElement = document.createElement("li");
 
     commentElement.classList.add("social__comment");
 
-    let commentPhoto = document.createElement("img");
+    let imgComment = getCommentImg(elem);
+    let paragraphComment = getCommentParagraph(elem);
 
-    commentPhoto.classList.add("social__picture");
-    commentPhoto.src = elem.avatar;
-    commentPhoto.alt = "Аватар комментатора фотографии";
-    commentPhoto.width = 35;
-    commentPhoto.height = 35;
-
-    let textElement = document.createElement("p");
-
-    textElement.classList.add("social__text");
-    textElement.textContent = elem.message;
-
-    commentElement.appendChild(commentPhoto);
-    commentElement.appendChild(textElement);
+    commentElement.appendChild(imgComment);
+    commentElement.appendChild(paragraphComment);
 
     big_picture.querySelector(".social__comments").appendChild(commentElement);
   }
