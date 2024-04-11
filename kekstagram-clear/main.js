@@ -132,7 +132,7 @@ function createFullSizePictureComment() {
     commentElement.appendChild(imgComment);
     commentElement.appendChild(paragraphComment);
 
-    big_picture.querySelector(".social__comments").appendChild(commentElement);
+    bigPicture.querySelector(".social__comments").appendChild(commentElement);
   }
 }
 
