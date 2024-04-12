@@ -50,24 +50,27 @@ function createPhotosData() {
       comments: [],
       description: getRandomArrayElement(DESCRIPTIONS),
     };
-    let comment = createRandomComment();
+    let comments = createRandomComment();
 
-    photoData.comments.push(comment);
+    for (let j = 0; j < comments.length; j++) {
+      photoData.comments.push(comments[j]);
+    }
     photosData.push(photoData);
   }
 }
 
 function createRandomComment() {
-  let commentsCount = getRandomInt(1, COMMAX);
-
+  const commentsCount = getRandomInt(1, COMMAX);
+  const commentsData = [];
   for (let j = 1; j <= commentsCount; j++) {
     const commentData = {
       avatar: `img/avatar-${getRandomInt(1, COMMAVATARMAX)}.svg`,
       message: getRandomArrayElement(COMMENTS),
       name: getRandomArrayElement(NAMES),
     };
-    return commentData;
+    commentsData.push(commentData);
   }
+  return commentsData;
 }
 
 function uploadPhotos() {
@@ -98,8 +101,8 @@ function presentFullSizePicture() {
     firstPhoto.description;
 }
 
-presentFullSizePicture();
-createFullSizePictureComment();
+// presentFullSizePicture();
+// createFullSizePictureComment();
 
 function getCommentImg(elem) {
   let commentPhoto = document.createElement("img");
