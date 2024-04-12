@@ -50,14 +50,14 @@ function createPhotosData() {
       comments: [],
       description: getRandomArrayElement(DESCRIPTIONS),
     };
-    let comment = commentsSpawn();
+    let comment = createRandomComment();
 
     photoData.comments.push(comment);
     photosData.push(photoData);
   }
 }
 
-function commentsSpawn() {
+function createRandomComment() {
   let commentsCount = getRandomInt(1, COMMAX);
 
   for (let j = 1; j <= commentsCount; j++) {
