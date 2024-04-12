@@ -1,11 +1,11 @@
 "use strict";
-const LIKEMIN = 15;
-const LIKEMAX = 200;
-const PHOTOQUANTITY = 25;
-const COMMAX = 5;
-const COMMAVATARMAX = 6;
-const WIDTHCOMMENT = 35;
-const HEIGHTCOMMENT = 35;
+const LIKE_MIN = 15;
+const LIKE_MAX = 200;
+const PHOTO_QUANTITY = 25;
+const COM_MAX = 5;
+const MAX_AVATAR_NUM = 6;
+const WIDTH_COMMENT = 35;
+const HEIGHT_COMMENT = 35;
 
 const COMMENTS = [
   `Всё отлично!`,
@@ -43,10 +43,10 @@ createPhotosData();
 uploadPhotos();
 
 function createPhotosData() {
-  for (let i = 1; i <= PHOTOQUANTITY; i++) {
+  for (let i = 1; i <= PHOTO_QUANTITY; i++) {
     const photoData = {
       url: `photos/${i}.jpg`,
-      likes: getRandomInt(LIKEMIN, LIKEMAX),
+      likes: getRandomInt(LIKE_MIN, LIKE_MAX),
       comments: [],
       description: getRandomArrayElement(DESCRIPTIONS),
     };
@@ -60,12 +60,12 @@ function createPhotosData() {
 }
 
 function createRandomComment() {
-  const commentsCount = getRandomInt(1, COMMAX);
+  const commentsCount = getRandomInt(1, COM_MAX);
   const commentsData = [];
 
   for (let j = 1; j <= commentsCount; j++) {
     const commentData = {
-      avatar: `img/avatar-${getRandomInt(1, COMMAVATARMAX)}.svg`,
+      avatar: `img/avatar-${getRandomInt(1, MAX_AVATAR_NUM)}.svg`,
       message: getRandomArrayElement(COMMENTS),
       name: getRandomArrayElement(NAMES),
     };
@@ -111,8 +111,8 @@ function getCommentImg(elem) {
   commentPhoto.classList.add("social__picture");
   commentPhoto.src = elem.avatar;
   commentPhoto.alt = `Аватар комментатора фотографии`;
-  commentPhoto.width = WIDTHCOMMENT;
-  commentPhoto.height = HEIGHTCOMMENT;
+  commentPhoto.width = WIDTH_COMMENT;
+  commentPhoto.height = HEIGHT_COMMENT;
   return commentPhoto;
 }
 
