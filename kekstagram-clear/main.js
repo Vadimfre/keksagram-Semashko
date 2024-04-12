@@ -29,7 +29,7 @@ const DESCRIPTIONS = [
 ];
 
 const photosData = [];
-let fragment = document.createDocumentFragment();
+const fragment = document.createDocumentFragment();
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -50,7 +50,7 @@ function createPhotosData() {
       comments: [],
       description: getRandomArrayElement(DESCRIPTIONS),
     };
-    let comments = createRandomComment();
+    const comments = createRandomComment();
 
     for (let j = 0; j < comments.length; j++) {
       photoData.comments.push(comments[j]);
@@ -62,6 +62,7 @@ function createPhotosData() {
 function createRandomComment() {
   const commentsCount = getRandomInt(1, COMMAX);
   const commentsData = [];
+
   for (let j = 1; j <= commentsCount; j++) {
     const commentData = {
       avatar: `img/avatar-${getRandomInt(1, COMMAVATARMAX)}.svg`,
@@ -74,9 +75,9 @@ function createRandomComment() {
 }
 
 function uploadPhotos() {
-  let pictureTemplate = document.querySelector("#picture").content;
+  const pictureTemplate = document.querySelector("#picture").content;
   for (let photo of photosData) {
-    let pictureElement = pictureTemplate.cloneNode(true);
+    const pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector(".picture__img").src = photo.url;
     pictureElement.querySelector(".picture__comments").textContent =
@@ -88,8 +89,8 @@ function uploadPhotos() {
   document.querySelector(".pictures").appendChild(fragment);
 }
 
-let bigPicture = document.querySelector(".big-picture");
-let firstPhoto = photosData[0];
+const bigPicture = document.querySelector(".big-picture");
+const firstPhoto = photosData[0];
 
 function presentFullSizePicture() {
   bigPicture.classList.remove("hidden");
@@ -101,11 +102,11 @@ function presentFullSizePicture() {
     firstPhoto.description;
 }
 
-// presentFullSizePicture();
-// createFullSizePictureComment();
+presentFullSizePicture();
+createFullSizePictureComment();
 
 function getCommentImg(elem) {
-  let commentPhoto = document.createElement("img");
+  const commentPhoto = document.createElement("img");
 
   commentPhoto.classList.add("social__picture");
   commentPhoto.src = elem.avatar;
@@ -116,7 +117,7 @@ function getCommentImg(elem) {
 }
 
 function getCommentParagraph(elem) {
-  let textElement = document.createElement("p");
+  const textElement = document.createElement("p");
 
   textElement.classList.add("social__text");
   textElement.textContent = elem.message;
@@ -125,12 +126,12 @@ function getCommentParagraph(elem) {
 
 function createFullSizePictureComment() {
   for (let elem of firstPhoto.comments) {
-    let commentElement = document.createElement("li");
+    const commentElement = document.createElement("li");
 
     commentElement.classList.add("social__comment");
 
-    let imgComment = getCommentImg(elem);
-    let paragraphComment = getCommentParagraph(elem);
+    const imgComment = getCommentImg(elem);
+    const paragraphComment = getCommentParagraph(elem);
 
     commentElement.appendChild(imgComment);
     commentElement.appendChild(paragraphComment);
@@ -139,8 +140,8 @@ function createFullSizePictureComment() {
   }
 }
 
-let commentCount = document.querySelector(".social__comment-count");
-let commentsLoader = document.querySelector(".comments-loader");
+const commentCount = document.querySelector(".social__comment-count");
+const commentsLoader = document.querySelector(".comments-loader");
 
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
