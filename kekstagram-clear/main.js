@@ -148,23 +148,3 @@ const commentsLoader = document.querySelector(".comments-loader");
 
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
-
-let uploadFile = document.querySelector("#upload-file");
-let imageEditForm = document.querySelector(".img-upload__overlay");
-let uploadCancel = document.querySelector(".img-upload__cancel");
-
-uploadFile.addEventListener("change", function () {
-  imageEditForm.classList.remove("hidden");
-});
-
-uploadCancel.addEventListener("click", function () {
-  imageEditForm.classList.add("hidden");
-  uploadFile.value = "";
-});
-
-document.addEventListener("keydown", function (evt) {
-  if (evt.key === "Escape") {
-    imageEditForm.classList.add("hidden");
-    uploadFile.value = "";
-  }
-});
