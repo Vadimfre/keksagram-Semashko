@@ -59,7 +59,7 @@ function createPhotosData() {
   }
 }
 
-function createRandomComment() {
+function createComments() {
   const commentsCount = getRandomInt(1, COM_MAX);
   const commentsData = [];
 
