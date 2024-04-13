@@ -104,22 +104,22 @@ function presentFullSizePicture(photoData) {
 
 presentFullSizePicture(photosData[0]);
 
-function getCommentImg(elem) {
+function getCommentImg(commentData) {
   const commentPhoto = document.createElement("img");
 
   commentPhoto.classList.add("social__picture");
-  commentPhoto.src = elem.avatar;
+  commentPhoto.src = commentData.avatar;
   commentPhoto.alt = `Аватар комментатора фотографии`;
   commentPhoto.width = AVATAR_IMAGE_WIDTH;
   commentPhoto.height = AVATAR_IMAGE_HEIGHT;
   return commentPhoto;
 }
 
-function getCommentParagraph(elem) {
+function getCommentParagraph(commentData) {
   const textElement = document.createElement("p");
 
   textElement.classList.add("social__text");
-  textElement.textContent = elem.message;
+  textElement.textContent = commentData.message;
   return textElement;
 }
 
