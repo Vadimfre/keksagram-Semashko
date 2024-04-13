@@ -50,11 +50,8 @@ function createPhotosData() {
       comments: [],
       description: getRandomArrayElement(DESCRIPTIONS),
     };
-    const comments = createRandomComment();
+    photoData.comments = createComments();
 
-    for (let j = 0; j < comments.length; j++) {
-      photoData.comments.push(comments[j]);
-    }
     photosData.push(photoData);
   }
 }
