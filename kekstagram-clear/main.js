@@ -98,7 +98,7 @@ function presentFullSizePicture(photoData) {
     photoData.comments.length;
   bigPicture.querySelector(".social__caption").textContent =
     photoData.description;
-  createFullSizePictureComment(photosData[0]);
+  createFullSizePictureComment(photosData[0].comments);
   bigPicture.classList.remove("hidden");
 }
 
@@ -123,11 +123,11 @@ function getCommentParagraph(commentData) {
   return textElement;
 }
 
-function createFullSizePictureComment(photoData) {
+function createFullSizePictureComment(comments) {
   const commentsContainer = bigPicture.querySelector(".social__comments");
   const commentsFragment = document.createDocumentFragment();
 
-  for (const commentData of photoData.comments) {
+  for (const commentData of comments) {
     const commentElement = document.createElement("li");
 
     commentElement.classList.add("social__comment");
