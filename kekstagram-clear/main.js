@@ -1,4 +1,5 @@
 "use strict";
+
 const MINIMUM_LIKES_COUNT = 15;
 const MAXIMUM_LIKES_COUNT = 200;
 const TOTAL_NUMBER_OF_PHOTOS = 25;
@@ -29,7 +30,6 @@ const DESCRIPTIONS = [
 ];
 
 const photosData = [];
-const fragment = document.createDocumentFragment();
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -75,6 +75,9 @@ function uploadPhotos() {
   const pictureTemplate = document
     .querySelector("#picture")
     .content.querySelector(".picture");
+
+  const fragment = document.createDocumentFragment();
+
   for (const photoData of photosData) {
     const pictureElement = pictureTemplate.cloneNode(true);
 
@@ -86,6 +89,7 @@ function uploadPhotos() {
 
     fragment.appendChild(pictureElement);
   }
+
   document.querySelector(".pictures").appendChild(fragment);
 }
 
@@ -98,7 +102,10 @@ function presentFullSizePicture(photoData) {
     photoData.comments.length;
   bigPicture.querySelector(".social__caption").textContent =
     photoData.description;
-  createFullSizePictureComment(photosData[0].comments);
+
+  const commentsFragment = createFullSizePictureComment(photoData.comments);
+  bigPicture.querySelector(".social__comments").appendChild(commentsFragment);
+
   bigPicture.classList.remove("hidden");
 }
 
@@ -124,7 +131,6 @@ function getCommentParagraph(commentData) {
 }
 
 function createFullSizePictureComment(comments) {
-  const commentsContainer = bigPicture.querySelector(".social__comments");
   const commentsFragment = document.createDocumentFragment();
 
   for (const commentData of comments) {
@@ -140,7 +146,7 @@ function createFullSizePictureComment(comments) {
     commentsFragment.appendChild(commentElement);
   }
 
-  commentsContainer.appendChild(commentsFragment);
+  return commentsFragment;
 }
 
 const commentCount = document.querySelector(".social__comment-count");
