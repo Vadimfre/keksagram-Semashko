@@ -82,10 +82,8 @@ function uploadPhotos() {
     const pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector(".picture__img").src = photoData.url;
-    pictureElement.querySelector(".picture__comments").textContent =
-      photoData.comments.length;
-    pictureElement.querySelector(".picture__likes").textContent =
-      photoData.likes;
+    pictureElement.querySelector(".picture__comments").textContent = photoData.comments.length;
+    pictureElement.querySelector(".picture__likes").textContent = photoData.likes;
 
     pictureElement.addEventListener("click", function () {
       presentFullSizePicture(photoData);
@@ -102,10 +100,8 @@ const bigPicture = document.querySelector(".big-picture");
 function presentFullSizePicture(photoData) {
   bigPicture.querySelector(".big-picture__img img").src = photoData.url;
   bigPicture.querySelector(".likes-count").textContent = photoData.likes;
-  bigPicture.querySelector(".comments-count").textContent =
-    photoData.comments.length;
-  bigPicture.querySelector(".social__caption").textContent =
-    photoData.description;
+  bigPicture.querySelector(".comments-count").textContent = photoData.comments.length;
+  bigPicture.querySelector(".social__caption").textContent = photoData.description;
 
   const commentsFragment = createFullSizePictureComment(photoData.comments);
   bigPicture.querySelector(".social__comments").appendChild(commentsFragment);
