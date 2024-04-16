@@ -87,6 +87,10 @@ function uploadPhotos() {
     pictureElement.querySelector(".picture__likes").textContent =
       photoData.likes;
 
+    pictureElement.addEventListener("click", function () {
+      presentFullSizePicture(photoData);
+    });
+
     fragment.appendChild(pictureElement);
   }
 
@@ -109,7 +113,7 @@ function presentFullSizePicture(photoData) {
   bigPicture.classList.remove("hidden");
 }
 
-presentFullSizePicture(photosData[0]);
+// presentFullSizePicture(photosData[0]);
 
 function getCommentImg(commentData) {
   const commentPhoto = document.createElement("img");
@@ -154,3 +158,23 @@ const commentsLoader = document.querySelector(".comments-loader");
 
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
+
+const uploadFile = document.querySelector("#upload-file");
+const imageEditForm = document.querySelector(".img-upload__overlay");
+const uploadCancel = document.querySelector(".img-upload__cancel");
+
+uploadFile.addEventListener("change", function () {
+  imageEditForm.classList.remove("hidden");
+});
+
+uploadCancel.addEventListener("click", function () {
+  imageEditForm.classList.add("hidden");
+  uploadFile.value = "";
+});
+
+document.addEventListener("keydown", function (evt) {
+  if (evt.key === "Escape") {
+    imageEditForm.classList.add("hidden");
+    uploadFile.value = "";
+  }
+});
