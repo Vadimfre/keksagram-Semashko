@@ -71,6 +71,12 @@ function createComments() {
   return commentsData;
 }
 
+function createPictureElementClickHandler(photoData) {
+  return function onPictureElementClick() {
+    presentFullSizePicture(photoData);
+  };
+}
+
 function uploadPhotos() {
   const pictureTemplate = document
     .querySelector("#picture")
@@ -85,9 +91,8 @@ function uploadPhotos() {
     pictureElement.querySelector(".picture__comments").textContent = photoData.comments.length;
     pictureElement.querySelector(".picture__likes").textContent = photoData.likes;
 
-    pictureElement.addEventListener("click", function () {
-      presentFullSizePicture(photoData);
-    });
+    const onPictureElementClick = createPictureElementClickHandler(photoData);
+    pictureElement.addEventListener("click", onPictureElementClick);
 
     fragment.appendChild(pictureElement);
   }
@@ -161,16 +166,26 @@ const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
 
 uploadFile.addEventListener("change", function () {
   imageEditForm.classList.remove("hidden");
+  
+  uploadCancel.addEventListener("click", onCancelClick);
+  document.addEventListener("keydown", onEscClick);
 });
 
-uploadCancel.addEventListener("click", function () {
+function hideImageEditForm() {
   imageEditForm.classList.add("hidden");
   uploadFile.value = "";
-});
 
-document.addEventListener("keydown", function (evt) {
+  uploadCancel.removeEventListener("click", onCancelClick);
+  document.removeEventListener("keydown", onEscClick);
+}
+
+function onCancelClick() {
+  hideImageEditForm();
+}
+
+function onEscClick(evt) {
   if (evt.key === "Escape") {
-    imageEditForm.classList.add("hidden");
-    uploadFile.value = "";
+    hideImageEditForm();
   }
-});
+}
+
