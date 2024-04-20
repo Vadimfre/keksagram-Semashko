@@ -155,9 +155,9 @@ const commentsLoader = document.querySelector(".comments-loader");
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
 
-const uploadFile = document.querySelector("#upload-file");
 const imageEditForm = document.querySelector(".img-upload__overlay");
-const uploadCancel = document.querySelector(".img-upload__cancel");
+const uploadFile = imageEditForm.querySelector("#upload-file");
+const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
 
 uploadFile.addEventListener("change", function () {
   imageEditForm.classList.remove("hidden");
