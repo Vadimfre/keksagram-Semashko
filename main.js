@@ -160,9 +160,11 @@ const commentsLoader = document.querySelector(".comments-loader");
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
 
-const uploadFile = document.querySelector("#upload-file");
-const imageEditForm = document.querySelector(".img-upload__overlay");
-const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
+const imageUploadForm = document.querySelector(".img-upload__form");
+
+const uploadFile = imageUploadForm.querySelector("#upload-file");
+const imageEditForm = imageUploadForm.querySelector(".img-upload__overlay");
+const uploadCancel = imageUploadForm.querySelector(".img-upload__cancel");
 
 uploadFile.addEventListener("change", function () {
   imageEditForm.classList.remove("hidden");
