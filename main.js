@@ -71,29 +71,30 @@ function createComments() {
   return commentsData;
 }
 
-function createPictureElementClickHandler(photoData) {
-  return function onPictureElementClick() {
-    presentFullSizePicture(photoData);
-  };
+
+function onPictureClick(e) {
+  const index = e.currentTarget.dataset.index;
+  const photoData = photosData[index];
+
+  presentFullSizePicture(photoData);
 }
 
 function uploadPhotos() {
-  const pictureTemplate = document
-    .querySelector("#picture")
-    .content.querySelector(".picture");
-
+  const pictureTemplate = document.querySelector("#picture").content.querySelector(".picture");
   const fragment = document.createDocumentFragment();
 
-  for (const photoData of photosData) {
+  for (let i = 0; i < TOTAL_NUMBER_OF_PHOTOS; i++) {
+    const photoData = photosData[i];
     const pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector(".picture__img").src = photoData.url;
     pictureElement.querySelector(".picture__comments").textContent = photoData.comments.length;
     pictureElement.querySelector(".picture__likes").textContent = photoData.likes;
-
-    const onPictureElementClick = createPictureElementClickHandler(photoData);
-    pictureElement.addEventListener("click", onPictureElementClick);
-
+  
+    pictureElement.dataset.index = i;
+    
+    pictureElement.addEventListener('click', onPictureClick);
+    
     fragment.appendChild(pictureElement);
   }
 
