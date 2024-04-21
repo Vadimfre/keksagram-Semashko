@@ -162,10 +162,13 @@ commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
 
 const imageUploadForm = document.querySelector(".img-upload__form");
-
 const uploadFile = imageUploadForm.querySelector("#upload-file");
 const imageEditForm = imageUploadForm.querySelector(".img-upload__overlay");
-const uploadCancel = imageUploadForm.querySelector(".img-upload__cancel");
+
+
+const imgUploadWrapper = imageEditForm.querySelector(".img-upload__wrapper");
+const imgUploadPreviewContainer = imgUploadWrapper.querySelector(".img-upload__preview-container");
+const uploadCancel = imgUploadPreviewContainer.querySelector(".img-upload__cancel");
 
 uploadFile.addEventListener("change", function () {
   imageEditForm.classList.remove("hidden");
@@ -191,4 +194,5 @@ function onEscClick(evt) {
     hideImageEditForm();
   }
 }
+
 
