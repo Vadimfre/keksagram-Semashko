@@ -83,8 +83,7 @@ function uploadPhotos() {
   const pictureTemplate = document.querySelector("#picture").content.querySelector(".picture");
   const fragment = document.createDocumentFragment();
 
-  for (let i = 0; i < TOTAL_NUMBER_OF_PHOTOS; i++) {
-    const photoData = photosData[i];
+  photosData.forEach((photoData, i) => {
     const pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector(".picture__img").src = photoData.url;
@@ -96,7 +95,7 @@ function uploadPhotos() {
     pictureElement.addEventListener('click', onPictureClick);
     
     fragment.appendChild(pictureElement);
-  }
+  });
 
   document.querySelector(".pictures").appendChild(fragment);
 }
