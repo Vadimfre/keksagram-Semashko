@@ -7,6 +7,16 @@ const MAXIMUM_COMMENTS_COUNT = 5;
 const MAXIMUM_AVATAR_INDEX = 6;
 const AVATAR_IMAGE_WIDTH = 35;
 const AVATAR_IMAGE_HEIGHT = 35;
+const MIN_HASHTAG_LENGTH = 1;
+const MAX_HASHTAG_LENGTH = 19;
+const MAX_HASHTAG_COUNT = 5;
+
+const ERROR_MESSAGES = {
+  TOO_MANY_HASHTAGS: 'Нельзя указать больше пяти хэш-тегов',
+  ONLY_HASH: 'Хэштег не может состоять только из одной решетки',
+  INVALID_HASHTAG: 'Неверный формат хэш-тега',
+  DUPLICATE_HASHTAG: 'Один и тот же хэш-тег не может быть использован дважды'
+};
 
 const COMMENTS = [
   `Всё отлично!`,
@@ -192,33 +202,50 @@ function onEscClick(evt) {
 }
 
 const submitButton = imageEditForm.querySelector('#upload-submit');
-const hashtagInput = imageEditForm.querySelector('.text__hashtags');
+const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
 submitButton.addEventListener('click', () => {
-  validateHashtags(hashtagInput);
+  if (hashtagInput.value !== ''){
+    const hashtags = getHashtags(hashtagInput);
+    const errorMessage = validateHashtags(hashtags);
+    hashtagInput.setCustomValidity(errorMessage);
+  }
 });
 
-function validateHashtags(input) {
-  const hashtags = input.value.toLowerCase().split(' ');
+function getHashtags(input) {
+  return input.value.toLowerCase().split(' ');
+}
 
-  if (hashtags.length > 5) {
-    return input.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+function validateHashtags(hashtags) {
+  hashtagInput.setCustomValidity(''); 
+  
+  if (hashtags.length > MAX_HASHTAG_COUNT) {
+    return ERROR_MESSAGES.TOO_MANY_HASHTAGS;
   }
 
   for (let i = 0; i < hashtags.length; i++) {
     if (hashtags[i] === '#') {
-      return input.setCustomValidity('Хэштег не может состоять только из одной решетки');
+      return ERROR_MESSAGES.ONLY_HASH;
     }
 
-    if (!/^#[a-zA-Z0-9]{1,19}$/.test(hashtags[i])) {
-      return input.setCustomValidity('Неверный формат хэш-тега');
+    if (!isValidHashtag(hashtags[i])) {
+      return ERROR_MESSAGES.INVALID_HASHTAG;
     }
 
-    if (hashtags.indexOf(hashtags[i]) !== i) {
-      return input.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+    if (isDuplicateHashtag(hashtags, i)) {
+      return ERROR_MESSAGES.DUPLICATE_HASHTAG;
     }
   }
 
-  input.setCustomValidity('');
+  return '';
 }
+
+function isValidHashtag(hashtag) {
+  return new RegExp(`^#[a-zA-Z0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`).test(hashtag);
+}
+
+function isDuplicateHashtag(hashtags, index) {
+  return hashtags.indexOf(hashtags[index]) !== index;
+}
+
 
