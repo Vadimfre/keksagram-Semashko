@@ -191,8 +191,8 @@ function onEscClick(evt) {
   }
 }
 
-const submitButton = document.querySelector('#upload-submit');
-const hashtagInput = document.querySelector('.text__hashtags');
+const submitButton = imageEditForm.querySelector('#upload-submit');
+const hashtagInput = imageEditForm.querySelector('.text__hashtags');
 
 submitButton.addEventListener('click', () => {
   validateHashtags(hashtagInput);
