@@ -186,9 +186,39 @@ function onCancelClick() {
 }
 
 function onEscClick(evt) {
-  if (evt.key === "Escape") {
+  if (evt.key === "Escape" && document.activeElement !== hashtagInput) {
     hideImageEditForm();
   }
 }
 
+const submitButton = document.querySelector('#upload-submit');
+const hashtagInput = document.querySelector('.text__hashtags');
+
+submitButton.addEventListener('click', () => {
+  validateHashtags(hashtagInput);
+});
+
+function validateHashtags(input) {
+  const hashtags = input.value.toLowerCase().split(' ');
+
+  if (hashtags.length > 5) {
+    return input.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+  }
+
+  for (let i = 0; i < hashtags.length; i++) {
+    if (hashtags[i] === '#') {
+      return input.setCustomValidity('Хэштег не может состоять только из одной решетки');
+    }
+
+    if (!/^#[a-zA-Z0-9]{1,19}$/.test(hashtags[i])) {
+      return input.setCustomValidity('Неверный формат хэш-тега');
+    }
+
+    if (hashtags.indexOf(hashtags[i]) !== i) {
+      return input.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+    }
+  }
+
+  input.setCustomValidity('');
+}
 
