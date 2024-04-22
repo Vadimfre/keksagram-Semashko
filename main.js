@@ -164,10 +164,7 @@ const imageUploadForm = document.querySelector(".img-upload__form");
 const uploadFile = imageUploadForm.querySelector("#upload-file");
 const imageEditForm = imageUploadForm.querySelector(".img-upload__overlay");
 
-
-const imgUploadWrapper = imageEditForm.querySelector(".img-upload__wrapper");
-const imgUploadPreviewContainer = imgUploadWrapper.querySelector(".img-upload__preview-container");
-const uploadCancel = imgUploadPreviewContainer.querySelector(".img-upload__cancel");
+const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
 
 uploadFile.addEventListener("change", function () {
   imageEditForm.classList.remove("hidden");
