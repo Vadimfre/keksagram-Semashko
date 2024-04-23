@@ -15,7 +15,8 @@ const ERROR_MESSAGES = {
   TOO_MANY_HASHTAGS: 'Нельзя указать больше пяти хэш-тегов',
   ONLY_HASH: 'Хэштег не может состоять только из одной решетки',
   INVALID_HASHTAG: 'Неверный формат хэш-тега',
-  DUPLICATE_HASHTAG: 'Один и тот же хэш-тег не может быть использован дважды'
+  DUPLICATE_HASHTAG: 'Один и тот же хэш-тег не может быть использован дважды',
+  MISSING_HASH: 'Хэштег должен начинаться с символа #'
 };
 
 const COMMENTS = [
@@ -204,13 +205,33 @@ function onEscClick(evt) {
 const submitButton = imageEditForm.querySelector('#upload-submit');
 const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
-submitButton.addEventListener('click', () => {
+submitButton.addEventListener('click', handleSubmitClick);
+
+function checkStartsWithHash(inputStrings) {
+  const allStartsWithHash = inputStrings.every(str => str.startsWith('#'));
+
+  if (!allStartsWithHash) {
+    return ERROR_MESSAGES.MISSING_HASH;
+  }
+
+  return '';
+}
+
+function handleSubmitClick() {
   if (hashtagInput.value !== ''){
-    const hashtags = getHashtags(hashtagInput);
-    const errorMessage = validateHashtags(hashtags);
+    const inputStrings = getHashtags(hashtagInput);
+    
+    const hashError = checkStartsWithHash(inputStrings);
+    if (hashError) {
+      return hashtagInput.setCustomValidity(hashError);
+    }
+
+    const errorMessage = validateHashtags(inputStrings);
     hashtagInput.setCustomValidity(errorMessage);
   }
-});
+}
+
+submitButton.addEventListener('click', handleSubmitClick);
 
 function getHashtags(input) {
   return input.value.toLowerCase().split(' ');
