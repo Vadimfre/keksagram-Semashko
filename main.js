@@ -14,7 +14,7 @@ const MAX_HASHTAG_COUNT = 5;
 const ERROR_MESSAGES = {
   TOO_MANY_HASHTAGS: 'Нельзя указать больше пяти хэш-тегов',
   ONLY_HASH: 'Хэштег не может состоять только из одной решетки',
-  INVALID_HASHTAG: 'Неверный формат хэш-тега',
+  INVALID_HASHTAG: 'Неверный формат хэштега. Хэштег должен содержать буквы и цифры, и быть длиной от 1 до 19 символов. Например, "#пример".',
   DUPLICATE_HASHTAG: 'Один и тот же хэш-тег не может быть использован дважды',
   MISSING_HASH: 'Хэштег должен начинаться с символа #'
 };
@@ -86,6 +86,10 @@ function createComments() {
 function onPictureClick(e) {
   const index = e.currentTarget.dataset.index;
   const photoData = photosData[index];
+
+  bigPictureCancel.addEventListener('click', hideBigPicture);
+  document.addEventListener("keydown", onEscBigPictureClick);
+  overlay.addEventListener('click', onOverlayClick);
 
   presentFullSizePicture(photoData);
 }
@@ -168,14 +172,42 @@ function createFullSizePictureComment(comments) {
 const commentCount = document.querySelector(".social__comment-count");
 const commentsLoader = document.querySelector(".comments-loader");
 
+const bigPictureCancel = bigPicture.querySelector('#picture-cancel')
+
+function hideBigPicture(){
+  bigPicture.classList.add("hidden");
+
+  uploadCancel.removeEventListener("click", hideBigPicture);
+  document.removeEventListener("keydown", onEscBigPictureClick);
+  overlay.removeEventListener('click', onOverlayClick);
+  
+}
+
+function onEscBigPictureClick(evt){
+  if (evt.key === "Escape"){
+    hideBigPicture()
+  }
+  if (evt.key === `Enter` && document.activeElement === bigPictureCancel ){
+
+  }
+}
+
+function onOverlayClick(evt){
+  if (evt.target === overlay){
+    hideBigPicture()
+  }
+}
+
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
+
 
 const imageUploadForm = document.querySelector(".img-upload__form");
 const uploadFile = imageUploadForm.querySelector("#upload-file");
 const imageEditForm = imageUploadForm.querySelector(".img-upload__overlay");
 
 const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
+const overlay = document.querySelector('.overlay');
 
 uploadFile.addEventListener("change", function () {
   imageEditForm.classList.remove("hidden");
@@ -227,6 +259,7 @@ function handleSubmitClick() {
     }
 
     const errorMessage = validateHashtags(inputStrings);
+
     hashtagInput.setCustomValidity(errorMessage);
   }
 }
@@ -262,11 +295,21 @@ function validateHashtags(hashtags) {
 }
 
 function isValidHashtag(hashtag) {
-  return new RegExp(`^#[a-zA-Z0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`).test(hashtag);
+  return new RegExp(`^#[a-zA-Zа-яА-Я0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`).test(hashtag);
 }
 
 function isDuplicateHashtag(hashtags, index) {
   return hashtags.indexOf(hashtags[index]) !== index;
 }
+
+hashtagInput.addEventListener('input', () => {
+  hashtagInput.setCustomValidity('');
+});
+
+
+
+
+
+
 
 
