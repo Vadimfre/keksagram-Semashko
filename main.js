@@ -222,6 +222,7 @@ function hideImageEditForm() {
 
   uploadCancel.removeEventListener("click", onCancelClick);
   document.removeEventListener("keydown", onEscClick);
+  submitButton.removeEventListener('click', handleSubmitClick);
 }
 
 function onCancelClick() {
@@ -292,6 +293,7 @@ function validateHashtags(hashtags) {
   }
 
   return '';
+  
 }
 
 function isValidHashtag(hashtag) {
