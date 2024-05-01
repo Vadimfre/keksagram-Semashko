@@ -222,7 +222,7 @@ function hideImageEditForm() {
 
   uploadCancel.removeEventListener("click", onCancelClick);
   document.removeEventListener("keydown", onEscClick);
-  submitButton.removeEventListener('click', handleSubmitClick);
+  submitButton.removeEventListener('click', onSubmitClick);
 }
 
 function onCancelClick() {
@@ -238,7 +238,7 @@ function onEscClick(evt) {
 const submitButton = imageEditForm.querySelector('#upload-submit');
 const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
-submitButton.addEventListener('click', handleSubmitClick);
+submitButton.addEventListener('click', onSubmitClick);
 
 function checkStartsWithHash(inputStrings) {
   const allStartsWithHash = inputStrings.every(str => str.startsWith('#'));
@@ -250,7 +250,7 @@ function checkStartsWithHash(inputStrings) {
   return '';
 }
 
-function handleSubmitClick() {
+function onSubmitClick() {
   if (hashtagInput.value !== ''){
     const inputStrings = getHashtags(hashtagInput);
     
@@ -265,7 +265,7 @@ function handleSubmitClick() {
   }
 }
 
-submitButton.addEventListener('click', handleSubmitClick);
+submitButton.addEventListener('click', onSubmitClick);
 
 function getHashtags(input) {
   return input.value.toLowerCase().split(' ');
