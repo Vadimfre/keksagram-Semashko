@@ -237,7 +237,8 @@ function hideImageEditForm() {
   uploadCancel.removeEventListener("click", onCancelClick);
   document.removeEventListener("keydown", onEscClick);
   submitButton.removeEventListener('click', onSubmitClick);
-  document.removeEventListener('click', onOverlayImageEditFormClick)
+  document.removeEventListener('click', onOverlayImageEditFormClick);
+  hashtagInput.removeEventListener('input', handleHashtagInput);
 }
 
 function onCancelClick() {
