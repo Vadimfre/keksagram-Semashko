@@ -14,7 +14,14 @@ const MAX_HASHTAG_COUNT = 5;
 const ERROR_MESSAGES = {
   TOO_MANY_HASHTAGS: 'Нельзя указать больше пяти хэш-тегов',
   ONLY_HASH: 'Хэштег не может состоять только из одной решетки',
-  INVALID_HASHTAG: 'Неверный формат хэштега. Хэштег должен содержать буквы и цифры, и быть длиной от 1 до 19 символов. Например, "#пример".',
+  INVALID_HASHTAG: `Хэштег должен начинаться с символа "#". 
+  Хэштег должен содержать только буквы и цифры. 
+  Хэштег должен быть длиной от 1 до 19 символов. 
+  Один и тот же хэштег не может быть использован дважды. 
+  Нельзя указать больше пяти хэштегов. 
+  Хэштег не может содержать символ "#" внутри. 
+  Например, "#пример1", "#пример2", "#пример3". 
+  Пожалуйста, проверьте ваши хэштеги и попробуйте снова.`,
   DUPLICATE_HASHTAG: 'Один и тот же хэш-тег не может быть использован дважды',
   MISSING_HASH: 'Хэштег должен начинаться с символа #'
 };
@@ -275,7 +282,7 @@ function onSubmitClick() {
 submitButton.addEventListener('click', onSubmitClick);
 
 function getHashtags(input) {
-  return input.value.toLowerCase().split(' ');
+  return input.value.toLowerCase().trim().split(' ');
 }
 
 function validateHashtags(hashtags) {
@@ -311,9 +318,12 @@ function isDuplicateHashtag(hashtags, index) {
   return hashtags.indexOf(hashtags[index]) !== index;
 }
 
-hashtagInput.addEventListener('input', () => {
-  onSubmitClick()
-});
+function handleHashtagInput() {
+  onSubmitClick();
+}
+
+hashtagInput.addEventListener('input', handleHashtagInput);
+
 
 
 
