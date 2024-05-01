@@ -198,6 +198,12 @@ function onOverlayClick(evt){
   }
 }
 
+function onOverlayImageEditFormClick(evt){
+  if (evt.target === imageEditForm){
+    hideImageEditForm()
+  }
+}
+
 commentCount.classList.add("visually-hidden");
 commentsLoader.classList.add("visually-hidden");
 
@@ -214,6 +220,7 @@ uploadFile.addEventListener("change", function () {
   
   uploadCancel.addEventListener("click", onCancelClick);
   document.addEventListener("keydown", onEscClick);
+  document.addEventListener('click', onOverlayImageEditFormClick)
 });
 
 function hideImageEditForm() {
@@ -223,6 +230,7 @@ function hideImageEditForm() {
   uploadCancel.removeEventListener("click", onCancelClick);
   document.removeEventListener("keydown", onEscClick);
   submitButton.removeEventListener('click', onSubmitClick);
+  document.removeEventListener('click', onOverlayImageEditFormClick)
 }
 
 function onCancelClick() {
@@ -304,7 +312,7 @@ function isDuplicateHashtag(hashtags, index) {
 }
 
 hashtagInput.addEventListener('input', () => {
-  hashtagInput.setCustomValidity('');
+  onSubmitClick()
 });
 
 
