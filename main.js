@@ -238,7 +238,6 @@ function onEscClick(evt) {
 const submitButton = imageEditForm.querySelector('#upload-submit');
 const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
-submitButton.addEventListener('click', onSubmitClick);
 
 function checkStartsWithHash(inputStrings) {
   const allStartsWithHash = inputStrings.every(str => str.startsWith('#'));
