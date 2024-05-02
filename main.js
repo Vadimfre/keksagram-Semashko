@@ -227,7 +227,7 @@ uploadFile.addEventListener("change", function () {
   
   uploadCancel.addEventListener("click", onCancelClick);
   document.addEventListener("keydown", onEscClick);
-  document.addEventListener('click', onOverlayImageEditFormClick)
+  imageEditForm.addEventListener('click', onOverlayImageEditFormClick)
 });
 
 function hideImageEditForm() {
@@ -237,7 +237,7 @@ function hideImageEditForm() {
   uploadCancel.removeEventListener("click", onCancelClick);
   document.removeEventListener("keydown", onEscClick);
   submitButton.removeEventListener('click', onSubmitClick);
-  document.removeEventListener('click', onOverlayImageEditFormClick);
+  imageEditForm.removeEventListener('click', onOverlayImageEditFormClick);
   hashtagInput.removeEventListener('input', handleHashtagInput);
 }
 
@@ -324,12 +324,3 @@ function handleHashtagInput() {
 }
 
 hashtagInput.addEventListener('input', handleHashtagInput);
-
-
-
-
-
-
-
-
-
