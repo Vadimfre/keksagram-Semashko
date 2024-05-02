@@ -94,7 +94,7 @@ function onPictureClick(e) {
   const index = e.currentTarget.dataset.index;
   const photoData = photosData[index];
 
-  bigPictureCancel.addEventListener('click', hideBigPicture);
+  bigPictureCancel.addEventListener('click', onbigPictureCancelClick);
   document.addEventListener("keydown", onEscBigPictureClick);
   overlay.addEventListener('click', onOverlayClick);
 
@@ -185,10 +185,10 @@ const commentsLoader = document.querySelector(".comments-loader");
 
 const bigPictureCancel = bigPicture.querySelector('#picture-cancel')
 
-function hideBigPicture(){
+function onbigPictureCancelClick(){
   bigPicture.classList.add("hidden");
 
-  uploadCancel.removeEventListener("click", hideBigPicture);
+  uploadCancel.removeEventListener("click", onbigPictureCancelClick);
   document.removeEventListener("keydown", onEscBigPictureClick);
   overlay.removeEventListener('click', onOverlayClick);
   
@@ -196,7 +196,7 @@ function hideBigPicture(){
 
 function onEscBigPictureClick(evt){
   if (evt.key === "Escape"){
-    hideBigPicture()
+    onbigPictureCancelClick()
   }
   if (evt.key === `Enter` && document.activeElement === bigPictureCancel ){
 
@@ -205,13 +205,13 @@ function onEscBigPictureClick(evt){
 
 function onOverlayClick(evt){
   if (evt.target === overlay){
-    hideBigPicture()
+    onbigPictureCancelClick()
   }
 }
 
 function onOverlayImageEditFormClick(evt){
   if (evt.target === imageEditForm){
-    hideImageEditForm()
+    onbigPictureCancelClick()
   }
 }
 
@@ -242,7 +242,7 @@ function hideImageEditForm() {
   document.removeEventListener("keydown", onEscClick);
   submitButton.removeEventListener('click', onSubmitClick);
   imageEditForm.removeEventListener('click', onOverlayImageEditFormClick);
-  hashtagInput.removeEventListener('input', handleHashtagInput);
+  hashtagInput.removeEventListener('input', onHashtagInput);
 }
 
 function onCancelClick() {
