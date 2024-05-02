@@ -130,11 +130,15 @@ function presentFullSizePicture(photoData) {
   bigPicture.querySelector(".comments-count").textContent = photoData.comments.length;
   bigPicture.querySelector(".social__caption").textContent = photoData.description;
 
+  const commentsContainer = bigPicture.querySelector(".social__comments");
+  commentsContainer.innerHTML = '';
+
   const commentsFragment = createFullSizePictureComment(photoData.comments);
-  bigPicture.querySelector(".social__comments").appendChild(commentsFragment);
+  commentsContainer.appendChild(commentsFragment);
 
   bigPicture.classList.remove("hidden");
 }
+
 
 // presentFullSizePicture(photosData[0]);
 
