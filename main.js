@@ -11,10 +11,10 @@ const MIN_HASHTAG_LENGTH = 1;
 const MAX_HASHTAG_LENGTH = 19;
 const MAX_HASHTAG_COUNT = 5;
 
-const ERROR_MESSAGES = {
-  TOO_MANY_HASHTAGS: 'Нельзя указать больше пяти хэш-тегов',
-  ONLY_HASH: 'Хэштег не может состоять только из одной решетки',
-  InvalidHashtag: `Хэштег должен начинаться с символа "#". 
+const ErrorMessages = {
+  HashtagErrorTooMany: 'Нельзя указать больше пяти хэш-тегов',
+  HashtagErrorOnlyHash: 'Хэштег не может состоять только из одной решетки',
+  HashtagErrorInvalid: `Хэштег должен начинаться с символа "#". 
   Хэштег должен содержать только буквы и цифры. 
   Хэштег должен быть длиной от 1 до 19 символов. 
   Один и тот же хэштег не может быть использован дважды. 
@@ -22,9 +22,10 @@ const ERROR_MESSAGES = {
   Хэштег не может содержать символ "#" внутри. 
   Например, "#пример1", "#пример2", "#пример3". 
   Пожалуйста, проверьте ваши хэштеги и попробуйте снова.`,
-  DUPLICATE_HASHTAG: 'Один и тот же хэш-тег не может быть использован дважды',
-  MISSING_HASH: 'Хэштег должен начинаться с символа #'
+  HashtagErrorDuplicate: 'Один и тот же хэш-тег не может быть использован дважды',
+  HashtagErrorMissingHash: 'Хэштег должен начинаться с символа #'
 };
+
 
 const COMMENTS = [
   `Всё отлично!`,
@@ -263,7 +264,7 @@ function checkStartsWithHash(inputStrings) {
   const allStartsWithHash = inputStrings.every(str => str.startsWith('#'));
 
   if (!allStartsWithHash) {
-    return ERROR_MESSAGES.MISSING_HASH;
+    return ErrorMessages.HashtagErrorMissingHash;
   }
 
   return '';
@@ -294,20 +295,20 @@ function validateHashtags(hashtags) {
   hashtagInput.setCustomValidity(''); 
   
   if (hashtags.length > MAX_HASHTAG_COUNT) {
-    return ERROR_MESSAGES.TOO_MANY_HASHTAGS;
+    return ErrorMessages.HashtagErrorTooMany;
   }
 
   for (let i = 0; i < hashtags.length; i++) {
     if (hashtags[i] === '#') {
-      return ERROR_MESSAGES.ONLY_HASH;
+      return ErrorMessages.HashtagErrorOnlyHash;
     }
 
     if (!isValidHashtag(hashtags[i])) {
-      return ERROR_MESSAGES.InvalidHashtag;
+      return ErrorMessages.HashtagErrorInvalid;
     }
 
     if (isDuplicateHashtag(hashtags, i)) {
-      return ERROR_MESSAGES.DUPLICATE_HASHTAG;
+      return ErrorMessages.HashtagErrorDuplicate;
     }
   }
 
