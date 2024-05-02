@@ -14,7 +14,7 @@ const MAX_HASHTAG_COUNT = 5;
 const ERROR_MESSAGES = {
   TOO_MANY_HASHTAGS: 'Нельзя указать больше пяти хэш-тегов',
   ONLY_HASH: 'Хэштег не может состоять только из одной решетки',
-  INVALID_HASHTAG: `Хэштег должен начинаться с символа "#". 
+  InvalidHashtag: `Хэштег должен начинаться с символа "#". 
   Хэштег должен содержать только буквы и цифры. 
   Хэштег должен быть длиной от 1 до 19 символов. 
   Один и тот же хэштег не может быть использован дважды. 
@@ -299,7 +299,7 @@ function validateHashtags(hashtags) {
     }
 
     if (!isValidHashtag(hashtags[i])) {
-      return ERROR_MESSAGES.INVALID_HASHTAG;
+      return ERROR_MESSAGES.InvalidHashtag;
     }
 
     if (isDuplicateHashtag(hashtags, i)) {
@@ -319,8 +319,8 @@ function isDuplicateHashtag(hashtags, index) {
   return hashtags.indexOf(hashtags[index]) !== index;
 }
 
-function handleHashtagInput() {
+function onHashtagInput() {
   onSubmitClick();
 }
 
-hashtagInput.addEventListener('input', handleHashtagInput);
+hashtagInput.addEventListener('input', onHashtagInput);
