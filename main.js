@@ -283,7 +283,7 @@ function onSubmitClick() {
 submitButton.addEventListener('click', onSubmitClick);
 
 function getHashtags(input) {
-  return input.value.toLowerCase().trim().split(' ');
+  return input.value.toLowerCase().trim().split(' ').filter(Boolean);
 }
 
 function validateHashtags(hashtags) {
