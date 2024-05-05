@@ -265,19 +265,10 @@ const submitButton = imageEditForm.querySelector('#upload-submit');
 const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
 
-function checkStartsWithHash(inputStrings) {
-  const allStartsWithHash = inputStrings.every((str) => str.startsWith('#'));
-
-  if (!allStartsWithHash) {
-    errorsState.hashtagErrorMissingHash = true;
-  }
-}
-
 function onSubmitClick() {
   if (hashtagInput.value !== ''){
     const inputStrings = getHashtags(hashtagInput);
     
-    checkStartsWithHash(inputStrings);
 
     const errorMessage = validateHashtags(inputStrings);
 
@@ -292,7 +283,13 @@ function getHashtags(input) {
 }
 
 function validateHashtags(hashtags) {
-  hashtagInput.setCustomValidity(''); 
+
+
+  const allStartsWithHash = hashtags.every((str) => str.startsWith('#'));
+
+  if (!allStartsWithHash) {
+    errorsState.hashtagErrorMissingHash = true;
+  }
   
   if (hashtags.length > MAX_HASHTAG_COUNT) {
     errorsState.hashtagErrorTooMany = true;
