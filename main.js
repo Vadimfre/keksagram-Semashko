@@ -224,8 +224,9 @@ commentsLoader.classList.add("visually-hidden");
 
 const imageUploadForm = document.querySelector(".img-upload__form");
 const uploadFile = imageUploadForm.querySelector("#upload-file");
-const imageEditForm = imageUploadForm.querySelector(".img-upload__wrapper");
 const imageEditFormOverlay = imageUploadForm.querySelector(".img-upload__overlay");
+const imageEditForm = imageEditFormOverlay.querySelector(".img-upload__wrapper");
+
 
 const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
 const overlay = document.querySelector('.overlay');
