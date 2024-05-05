@@ -269,7 +269,6 @@ function onSubmitClick() {
   if (hashtagInput.value !== ''){
     const inputStrings = getHashtags(hashtagInput);
     
-
     const errorMessage = validateHashtags(inputStrings);
 
     hashtagInput.setCustomValidity(errorMessage);
@@ -283,7 +282,7 @@ function getHashtags(input) {
 }
 
 function validateHashtags(hashtags) {
-
+  hashtagInput.setCustomValidity(''); 
 
   const allStartsWithHash = hashtags.every((str) => str.startsWith('#'));
 
