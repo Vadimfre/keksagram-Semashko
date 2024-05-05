@@ -11,21 +11,23 @@ const MIN_HASHTAG_LENGTH = 1;
 const MAX_HASHTAG_LENGTH = 19;
 const MAX_HASHTAG_COUNT = 5;
 
-const ErrorMessages = {
-  HashtagErrorTooMany: 'Нельзя указать больше пяти хэш-тегов',
-  HashtagErrorOnlyHash: 'Хэштег не может состоять только из одной решетки',
-  HashtagErrorInvalid: `Хэштег должен начинаться с символа "#". 
-  Хэштег должен содержать только буквы и цифры. 
-  Хэштег должен быть длиной от 1 до 19 символов. 
-  Один и тот же хэштег не может быть использован дважды. 
-  Нельзя указать больше пяти хэштегов. 
-  Хэштег не может содержать символ "#" внутри. 
-  Например, "#пример1", "#пример2", "#пример3". 
-  Пожалуйста, проверьте ваши хэштеги и попробуйте снова.`,
-  HashtagErrorDuplicate: 'Один и тот же хэш-тег не может быть использован дважды',
-  HashtagErrorMissingHash: 'Хэштег должен начинаться с символа #'
+const errorMessage = {
+  hashtagErrorTooMany: 'Нельзя указать больше пяти хэш-тегов',
+  hashtagErrorOnlyHash: 'Хэштег не может состоять только из одной решетки',
+  hashtagErrorInvalid: 'Максимальная длина хеш-тага 20 символом, включая решетку',
+  hashtagErrorDuplicate: 'Один и тот же хэш-тег не может быть использован дважды',
+  hashtagErrorMissingHash: 'Хэштег должен начинаться с символа #',
+  hashtagErrorSpace: 'Хэштеги должны разделяться пробелами'
 };
 
+const errorsState = {
+  hashtagErrorTooMany: false,
+  hashtagErrorOnlyHash: false,
+  hashtagErrorInvalid: false,
+  hashtagErrorDuplicate: false,
+  hashtagErrorMissingHash: false,
+  hashtagErrorSpace: false
+};
 
 const COMMENTS = [
   `Всё отлично!`,
@@ -211,8 +213,8 @@ function onOverlayClick(evt){
 }
 
 function onOverlayImageEditFormClick(evt){
-  if (evt.target === imageEditForm){
-    onbigPictureCancelClick()
+  if (evt.target === imageEditFormOverlay){
+    hideImageEditForm()
   }
 }
 
@@ -222,27 +224,29 @@ commentsLoader.classList.add("visually-hidden");
 
 const imageUploadForm = document.querySelector(".img-upload__form");
 const uploadFile = imageUploadForm.querySelector("#upload-file");
-const imageEditForm = imageUploadForm.querySelector(".img-upload__overlay");
+const imageEditForm = imageUploadForm.querySelector(".img-upload__wrapper");
+const imageEditFormOverlay = imageUploadForm.querySelector(".img-upload__overlay");
 
 const uploadCancel = imageEditForm.querySelector(".img-upload__cancel");
 const overlay = document.querySelector('.overlay');
 
 uploadFile.addEventListener("change", function () {
-  imageEditForm.classList.remove("hidden");
+  imageEditFormOverlay.classList.remove("hidden");
   
   uploadCancel.addEventListener("click", onCancelClick);
   document.addEventListener("keydown", onEscClick);
-  imageEditForm.addEventListener('click', onOverlayImageEditFormClick)
+  imageEditFormOverlay.addEventListener('click', onOverlayImageEditFormClick)
 });
 
 function hideImageEditForm() {
-  imageEditForm.classList.add("hidden");
+  imageEditFormOverlay.classList.add("hidden");
   uploadFile.value = "";
+  resetErrorState();
 
   uploadCancel.removeEventListener("click", onCancelClick);
   document.removeEventListener("keydown", onEscClick);
   submitButton.removeEventListener('click', onSubmitClick);
-  imageEditForm.removeEventListener('click', onOverlayImageEditFormClick);
+  imageEditFormOverlay.removeEventListener('click', onOverlayImageEditFormClick);
   hashtagInput.removeEventListener('input', onHashtagInput);
 }
 
@@ -261,23 +265,18 @@ const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
 
 function checkStartsWithHash(inputStrings) {
-  const allStartsWithHash = inputStrings.every(str => str.startsWith('#'));
+  const allStartsWithHash = inputStrings.every((str) => str.startsWith('#'));
 
   if (!allStartsWithHash) {
-    return ErrorMessages.HashtagErrorMissingHash;
+    errorsState.hashtagErrorMissingHash = true;
   }
-
-  return '';
 }
 
 function onSubmitClick() {
   if (hashtagInput.value !== ''){
     const inputStrings = getHashtags(hashtagInput);
     
-    const hashError = checkStartsWithHash(inputStrings);
-    if (hashError) {
-      return hashtagInput.setCustomValidity(hashError);
-    }
+    checkStartsWithHash(inputStrings);
 
     const errorMessage = validateHashtags(inputStrings);
 
@@ -295,37 +294,55 @@ function validateHashtags(hashtags) {
   hashtagInput.setCustomValidity(''); 
   
   if (hashtags.length > MAX_HASHTAG_COUNT) {
-    return ErrorMessages.HashtagErrorTooMany;
+    errorsState.hashtagErrorTooMany = true;
   }
 
   for (let i = 0; i < hashtags.length; i++) {
     if (hashtags[i] === '#') {
-      return ErrorMessages.HashtagErrorOnlyHash;
+      errorsState.hashtagErrorOnlyHash = true;
     }
 
     if (!isValidHashtag(hashtags[i])) {
-      return ErrorMessages.HashtagErrorInvalid;
+      errorsState.hashtagErrorInvalid = true;
     }
 
     if (isDuplicateHashtag(hashtags, i)) {
-      return ErrorMessages.HashtagErrorDuplicate;
+      errorsState.hashtagErrorDuplicate = true;
     }
   }
 
-  return '';
+  return generateErrorMessage();
   
 }
 
 function isValidHashtag(hashtag) {
-  return new RegExp(`^#[a-zA-Zа-яА-Я0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`).test(hashtag);
+  const isHashtagLengthValid = hashtag.length <= MAX_HASHTAG_LENGTH && hashtag.length >= MIN_HASHTAG_LENGTH;
+  return isHashtagLengthValid;
 }
 
 function isDuplicateHashtag(hashtags, index) {
   return hashtags.indexOf(hashtags[index]) !== index;
 }
 
+function resetErrorState() {
+  for (const error in errorsState) {
+    errorsState[error] = false;
+  }
+}
+
 function onHashtagInput() {
+  resetErrorState();
   onSubmitClick();
+}
+
+function generateErrorMessage() {
+  let message = '';
+  for (const error in errorsState) {
+    if (errorsState[error]) {
+      message += errorMessage[error] + '\n';
+    }
+  }
+  return message.trim();
 }
 
 hashtagInput.addEventListener('input', onHashtagInput);
