@@ -191,7 +191,7 @@ const bigPictureCancel = bigPicture.querySelector('#picture-cancel')
 function onbigPictureCancelClick(){
   bigPicture.classList.add("hidden");
 
-  uploadCancel.removeEventListener("click", onbigPictureCancelClick);
+  bigPictureCancel.removeEventListener("click", onbigPictureCancelClick);
   document.removeEventListener("keydown", onEscBigPictureClick);
   overlay.removeEventListener('click', onOverlayClick);
   
