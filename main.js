@@ -286,13 +286,8 @@ function validateHashtags(hashtags) {
 
   const allStartsWithHash = hashtags.every((str) => str.startsWith('#'));
 
-  if (!allStartsWithHash) {
-    errorsState.hashtagErrorMissingHash = true;
-  }
-  
-  if (hashtags.length > MAX_HASHTAG_COUNT) {
-    errorsState.hashtagErrorTooMany = true;
-  }
+    errorsState.hashtagErrorMissingHash = !allStartsWithHash || errorsState.hashtagErrorMissingHash;
+    errorsState.hashtagErrorTooMany =hashtags.length > MAX_HASHTAG_COUNT || errorsState.hashtagErrorTooMany;;
 
   for (let i = 0; i < hashtags.length; i++) {
     if (hashtags[i] === '#') {
