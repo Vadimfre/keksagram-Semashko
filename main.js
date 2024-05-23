@@ -20,7 +20,7 @@ const errorMessage = {
   hashtagErrorSpace: 'Хэштеги должны разделяться пробелами'
 };
 
-const errorsState = {
+const errorState = {
   hashtagErrorTooMany: false,
   hashtagErrorOnlyHash: false,
   hashtagErrorInvalid: false,
@@ -234,8 +234,8 @@ const overlay = document.querySelector('.overlay');
 uploadFile.addEventListener("change", function () {
   imageEditFormOverlay.classList.remove("hidden");
   
-  uploadCancel.addEventListener("click", onCancelClick);
-  document.addEventListener("keydown", onEscClick);
+  uploadCancel.addEventListener("click", onuploadCancelClick);
+  document.addEventListener("keydown", onEscImageEditFormClick);
   imageEditFormOverlay.addEventListener('click', onOverlayImageEditFormClick)
 });
 
@@ -244,18 +244,18 @@ function hideImageEditForm() {
   uploadFile.value = "";
   resetErrorState();
 
-  uploadCancel.removeEventListener("click", onCancelClick);
-  document.removeEventListener("keydown", onEscClick);
-  submitButton.removeEventListener('click', onSubmitClick);
+  uploadCancel.removeEventListener("click", onuploadCancelClick);
+  document.removeEventListener("keydown", onEscImageEditFormClick);
+  submitButton.removeEventListener('click', onsubmitButtonClick);
   imageEditFormOverlay.removeEventListener('click', onOverlayImageEditFormClick);
   hashtagInput.removeEventListener('input', onHashtagInput);
 }
 
-function onCancelClick() {
+function onuploadCancelClick() {
   hideImageEditForm();
 }
 
-function onEscClick(evt) {
+function onEscImageEditFormClick(evt) {
   if (evt.key === "Escape" && document.activeElement !== hashtagInput) {
     hideImageEditForm();
   }
@@ -265,7 +265,7 @@ const submitButton = imageEditForm.querySelector('#upload-submit');
 const hashtagInput = imageUploadForm.querySelector('.text__hashtags');
 
 
-function onSubmitClick() {
+function onsubmitButtonClick() {
   if (hashtagInput.value !== ''){
     const inputStrings = getHashtags(hashtagInput);
     
@@ -275,7 +275,7 @@ function onSubmitClick() {
   }
 }
 
-submitButton.addEventListener('click', onSubmitClick);
+submitButton.addEventListener('click', onsubmitButtonClick);
 
 function getHashtags(input) {
   return input.value.toLowerCase().trim().split(' ').filter(Boolean);
@@ -286,20 +286,20 @@ function validateHashtags(hashtags) {
 
   const allStartsWithHash = hashtags.every((str) => str.startsWith('#'));
 
-    errorsState.hashtagErrorMissingHash = !allStartsWithHash || errorsState.hashtagErrorMissingHash;
-    errorsState.hashtagErrorTooMany =hashtags.length > MAX_HASHTAG_COUNT || errorsState.hashtagErrorTooMany;;
+    errorState.hashtagErrorMissingHash = !allStartsWithHash || errorState.hashtagErrorMissingHash;
+    errorState.hashtagErrorTooMany =hashtags.length > MAX_HASHTAG_COUNT || errorState.hashtagErrorTooMany;;
 
   for (let i = 0; i < hashtags.length; i++) {
     if (hashtags[i] === '#') {
-      errorsState.hashtagErrorOnlyHash = true;
+      errorState.hashtagErrorOnlyHash = true;
     }
 
     if (!isValidHashtag(hashtags[i])) {
-      errorsState.hashtagErrorInvalid = true;
+      errorState.hashtagErrorInvalid = true;
     }
 
     if (isDuplicateHashtag(hashtags, i)) {
-      errorsState.hashtagErrorDuplicate = true;
+      errorState.hashtagErrorDuplicate = true;
     }
   }
 
@@ -317,20 +317,20 @@ function isDuplicateHashtag(hashtags, index) {
 }
 
 function resetErrorState() {
-  for (const error in errorsState) {
-    errorsState[error] = false;
+  for (const error in errorState) {
+    errorState[error] = false;
   }
 }
 
 function onHashtagInput() {
   resetErrorState();
-  onSubmitClick();
+  onsubmitButtonClick();
 }
 
 function generateErrorMessage() {
   let message = '';
-  for (const error in errorsState) {
-    if (errorsState[error]) {
+  for (const error in errorState) {
+    if (errorState[error]) {
       message += errorMessage[error] + '\n';
     }
   }
